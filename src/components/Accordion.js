@@ -56,8 +56,17 @@ const theme = createMuiTheme({
 });
 
 const css = {
-  fontAwesomeSize: {
-    fontSize: "10"
+  fontAwesomeSizeArrowUp: {
+    position: "relative",
+    top: -5,
+    color: colors.activeBlue,
+    fontSize: "12"
+  },
+  fontAwesomeSizeArrowDown: {
+    position: "relative",
+    top: -5,
+    // color: 'colors.activeBlue',
+    fontSize: "12"
   }
 };
 
@@ -70,7 +79,7 @@ const BoxImp = withStyles({
 
 const BoxText = withStyles({
   root: {
-    maxWidth: 75
+    maxWidth: 78
   }
 })(Box);
 
@@ -135,14 +144,13 @@ const Accordion = (dispatch) => {
                   display="flex"
                   flexDirection="row"
                   style={{
-                    padding: "0.5rem 0.5rem 0.5rem 0",
-                    border: "solid 1px lightgrey"
+                    padding: "0.5rem 0.5rem 0.5rem 0"
                   }}
                 >
                   <Box>
                     <FontAwesomeIcon
                       icon={faArrowCircleUp}
-                      style={css.fontAwesomeSize}
+                      style={css.fontAwesomeSizeArrowUp}
                     />
                   </Box>
                   <BoxText style={{ marginLeft: "0.2rem" }}>
@@ -163,14 +171,13 @@ const Accordion = (dispatch) => {
                   display="flex"
                   flexDirection="row"
                   style={{
-                    padding: "0.5rem 0.5rem 0.5rem 0",
-                    border: "solid 1px lightgrey"
+                    padding: "0.5rem 0.5rem 0.5rem 0"
                   }}
                 >
                   <Box>
                     <FontAwesomeIcon
                       icon={faArrowCircleDown}
-                      style={css.fontAwesomeSize}
+                      style={css.fontAwesomeSizeArrowDown}
                     />
                   </Box>
                   <BoxText style={{ marginLeft: "0.2rem" }}>
@@ -200,7 +207,7 @@ const Accordion = (dispatch) => {
                     }}
                   />
                 </BoxText>
-                <Box p={1} maxWidth={40}>
+                <Box p={0.5} maxWidth={40}>
                   <TextField
                     id="standard-multiline-static-appointment"
                     multiline
