@@ -10,13 +10,13 @@ import {
   faEdit
 } from "@fortawesome/free-solid-svg-icons";
 import { Checkbox, FormControlLabel, Typography, Box } from "@material-ui/core";
-import { ExpandMoreIcon } from "@material-ui/icons";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
-  TextField,
-  Chip
+  Chip,
+  TextField
 } from "@material-ui/core";
 import {
   withStyles,
@@ -29,21 +29,12 @@ import { colors } from "./theme";
 const IconLeftExpansionPanelSummary = withStyles({
   root: {
     alignItems: "start"
+    // padding: "0"
   },
   expandIcon: {
-    order: -1,
-    top: "0.8rem"
+    order: -1
   }
 })(ExpansionPanelSummary);
-
-const ModExpansionPanel = withStyles({
-  root: {
-    padding: "0"
-  },
-  rounded: {
-    borderRadius: "0px 7px 10px 0px"
-  }
-})(ExpansionPanel);
 
 const theme = createMuiTheme({
   typography: {
@@ -100,7 +91,6 @@ const Accordion = (dispatch) => {
   const consignee =
     `${destination.companyName} ${destination.address}, ${destination.city}` ||
     "-";
-
   const pcs = `Total pcs: ${packageSummary.totalPieces}` || "-";
   const wgt =
     `Weight: ${parseFloat(packageSummary.totalWeight).toFixed(3)}` || "-";
@@ -109,14 +99,13 @@ const Accordion = (dispatch) => {
   const summary = pcs + "\n" + wgt + "\n" + wgtu + "\n" + cbf;
   const appointment = `###.${shipmentId}\n4:15 PM\nJuly/12/2020`;
 
-  console.log("this is accodrion consignee: ", consignee);
+  console.log("this is accodrion: ", dispatch);
   return (
     <div style={{ marginTop: "1rem", border: "dashed 1px grey" }}>
-      <ModExpansionPanel square={true}>
+      <ExpansionPanel square={true}>
         <IconLeftExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           id="additional-actions1-header"
-          IconButtonProps={{ edge: "start" }}
         >
           <div style={{ width: "100%" }}>
             <BoxImp
@@ -244,7 +233,7 @@ const Accordion = (dispatch) => {
         <ExpansionPanelDetails>
           <Typography>HERE will be expantion pannel ...</Typography>
         </ExpansionPanelDetails>
-      </ModExpansionPanel>
+      </ExpansionPanel>
     </div>
   );
 };
