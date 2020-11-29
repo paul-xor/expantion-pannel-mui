@@ -10,12 +10,13 @@ import {
   faEdit
 } from "@fortawesome/free-solid-svg-icons";
 import { Checkbox, FormControlLabel, Typography, Box } from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { ExpandMoreIcon } from "@material-ui/icons";
 import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
-  Button
+  TextField,
+  Chip
 } from "@material-ui/core";
 import {
   withStyles,
@@ -23,30 +24,62 @@ import {
   ThemeProvider
 } from "@material-ui/core/styles";
 import _ from "lodash";
+import { colors } from "./theme";
 
 const IconLeftExpansionPanelSummary = withStyles({
   root: {
     alignItems: "start"
-    // padding: "0"
   },
   expandIcon: {
-    order: -1
+    order: -1,
+    top: "0.8rem"
   }
 })(ExpansionPanelSummary);
 
+const ModExpansionPanel = withStyles({
+  root: {
+    padding: "0"
+  },
+  rounded: {
+    borderRadius: "0px 7px 10px 0px"
+  }
+})(ExpansionPanel);
+
 const theme = createMuiTheme({
   typography: {
-    subtitleNew: {
-      fontSize: 4
+    subtitle1: {
+      fontSize: 13
+    }
+  },
+  overrides: {
+    MuiChip: {
+      root: {
+        borderRadius: 1,
+        fontSize: 10,
+        padding: "0",
+        maxWidth: "3.35rem",
+        maxHeight: "1.4rem"
+      }
     }
   }
 });
 
+const css = {
+  fontAwesomeSize: {
+    fontSize: "10"
+  }
+};
+
 const BoxImp = withStyles({
   root: {
     padding: "0",
-    marging: "0",
-    backgroundColor: "lightyellow"
+    marging: "0"
+  }
+})(Box);
+
+const BoxText = withStyles({
+  root: {
+    maxWidth: 75
   }
 })(Box);
 
@@ -62,15 +95,28 @@ const Accordion = (dispatch) => {
       driver
     }
   } = dispatch;
+  const shipper =
+    `${origin.companyName} ${origin.address}, ${origin.city}` || "-";
+  const consignee =
+    `${destination.companyName} ${destination.address}, ${destination.city}` ||
+    "-";
 
-  console.log("this is accodrion: ", dispatch);
+  const pcs = `Total pcs: ${packageSummary.totalPieces}` || "-";
+  const wgt =
+    `Weight: ${parseFloat(packageSummary.totalWeight).toFixed(3)}` || "-";
+  const wgtu = `Weight unit: ${packageSummary.weightUnit}` || "-";
+  const cbf = `CBF: ${parseFloat(packageSummary.cbf).toFixed(5)}` || "-";
+  const summary = pcs + "\n" + wgt + "\n" + wgtu + "\n" + cbf;
+  const appointment = `###.${shipmentId}\n4:15 PM\nJuly/12/2020`;
+
+  console.log("this is accodrion consignee: ", consignee);
   return (
-    <div style={{ marginTop: "1rem", border: "solid 1px yellow" }}>
-      <ExpansionPanel square={true}>
+    <div style={{ marginTop: "1rem", border: "dashed 1px grey" }}>
+      <ModExpansionPanel square={true}>
         <IconLeftExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           id="additional-actions1-header"
-          style={{ backgroundColor: "lightgrey", border: "dashed 1px black" }}
+          IconButtonProps={{ edge: "start" }}
         >
           <div style={{ width: "100%" }}>
             <BoxImp
@@ -90,59 +136,103 @@ const Accordion = (dispatch) => {
                     }
                   />
                 </BoxImp>
-                <Box m={0.1} p={1}>
-                  <Button
-                    style={{ color: "black", backgroundColor: "lightgreen" }}
-                  >
-                    {_.capitalize(destination.serviceType)}
-                  </Button>
+                <Box p={1}>
+                  <Chip
+                    label={_.capitalize(destination.serviceType)}
+                    style={{ backgroundColor: colors.cloudyBlue }}
+                  />
                 </Box>
                 <Box
-                  m={0.1}
-                  p={1}
                   display="flex"
                   flexDirection="row"
-                  style={{ border: "solid 1px lightgrey" }}
+                  style={{
+                    padding: "0.5rem 0.5rem 0.5rem 0",
+                    border: "solid 1px lightgrey"
+                  }}
                 >
                   <Box>
-                    <FontAwesomeIcon icon={faArrowCircleUp} />
+                    <FontAwesomeIcon
+                      icon={faArrowCircleUp}
+                      style={css.fontAwesomeSize}
+                    />
                   </Box>
-                  <Box
-                    style={{ maxWidth: 130, height: 65, marginLeft: "0.5rem" }}
-                  >
-                    <Typography variant="subtitle2">
-                      {`${origin.companyName} ${origin.address}, ${origin.city}` ||
-                        "-"}
-                    </Typography>
-                  </Box>
+                  <BoxText style={{ marginLeft: "0.2rem" }}>
+                    <TextField
+                      id="standard-multiline-static-shipper"
+                      multiline
+                      rows={4}
+                      defaultValue={shipper}
+                      InputProps={{
+                        readOnly: true,
+                        style: { fontSize: 10, paddingTop: "0" },
+                        disableUnderline: true
+                      }}
+                    />
+                  </BoxText>
                 </Box>
                 <Box
-                  m={0.1}
-                  p={1}
                   display="flex"
                   flexDirection="row"
-                  style={{ border: "solid 1px lightgrey" }}
+                  style={{
+                    padding: "0.5rem 0.5rem 0.5rem 0",
+                    border: "solid 1px lightgrey"
+                  }}
                 >
                   <Box>
-                    <FontAwesomeIcon icon={faArrowCircleDown} />
+                    <FontAwesomeIcon
+                      icon={faArrowCircleDown}
+                      style={css.fontAwesomeSize}
+                    />
                   </Box>
-                  <Box
-                    style={{ maxWidth: 130, height: 65, marginLeft: "0.5rem" }}
-                  >
-                    <Typography variant="subtitle2">
-                      {`${destination.companyName} ${destination.address}, ${destination.city}` ||
-                        "-"}
-                    </Typography>
-                  </Box>
+                  <BoxText style={{ marginLeft: "0.2rem" }}>
+                    <TextField
+                      id="standard-multiline-static-consignee"
+                      multiline
+                      rows={4}
+                      defaultValue={consignee}
+                      InputProps={{
+                        readOnly: true,
+                        style: { fontSize: 10, paddingTop: "0" },
+                        disableUnderline: true
+                      }}
+                    />
+                  </BoxText>
                 </Box>
-                <Box m={0.5} p={1} bgcolor="grey.300">
-                  Item 5
+                <BoxText p={1}>
+                  <TextField
+                    id="standard-multiline-static-summary"
+                    multiline
+                    rows={4}
+                    defaultValue={summary}
+                    InputProps={{
+                      readOnly: true,
+                      style: { fontSize: 10, paddingTop: "0" },
+                      disableUnderline: true
+                    }}
+                  />
+                </BoxText>
+                <Box p={1} maxWidth={40}>
+                  <TextField
+                    id="standard-multiline-static-appointment"
+                    multiline
+                    rows={4}
+                    defaultValue={appointment}
+                    InputProps={{
+                      readOnly: true,
+                      style: { fontSize: 10, paddingTop: "0" },
+                      disableUnderline: true
+                    }}
+                  />
                 </Box>
-                <Box m={0.5} p={1} bgcolor="grey.300">
-                  Item 6
-                </Box>
-                <Box m={0.5} p={1} bgcolor="grey.300">
-                  Item 7
+                <Box maxWidth={36} style={{ border: "solid 1px tomato" }}>
+                  <TextField
+                    id="standard-multiline-static-driver"
+                    variant="outlined"
+                    InputProps={{
+                      style: { fontSize: 10, padding: "0" },
+                      disableUnderline: true
+                    }}
+                  />
                 </Box>
                 <Box m={0.5} p={1} bgcolor="grey.300">
                   Item 8
@@ -154,7 +244,7 @@ const Accordion = (dispatch) => {
         <ExpansionPanelDetails>
           <Typography>HERE will be expantion pannel ...</Typography>
         </ExpansionPanelDetails>
-      </ExpansionPanel>
+      </ModExpansionPanel>
     </div>
   );
 };
